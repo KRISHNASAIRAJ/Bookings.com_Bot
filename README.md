@@ -53,7 +53,6 @@ The results are saved in a CSV file (`data.csv`) with the following format:
 | Hotel XYZ      | ₹4500       | 8.4         |
 | ...            | ...         | ...         |
 <br>
-<br>
 The results are displayed in Command Line Interface(CLI) with the following format:
 <br>
 <br>
