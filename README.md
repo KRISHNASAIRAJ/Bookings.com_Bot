@@ -55,6 +55,4 @@ The results are saved in a CSV file (`data.csv`) with the following format:
 <br>
 The results are displayed in Command Line Interface(CLI) with the following format:
 <br>
-<br>
-
-![image](https://github.com/user-attachments/assets/e9a3c1f3-0b78-4591-8693-b75455f79405)
+<img src="https://github.com/user-attachments/assets/e9a3c1f3-0b78-4591-8693-b75455f79405" width="300" height="150" />
