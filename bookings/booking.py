@@ -69,4 +69,5 @@ class Booking(webdriver.Chrome):
     
     def apply_filtration(self):
         filtration=BookingFlitration(driver=self)
-        
+        filtration.start_ratings(4)
+        time.sleep()
