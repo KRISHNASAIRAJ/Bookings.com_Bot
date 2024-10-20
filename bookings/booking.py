@@ -1,4 +1,4 @@
-import os
+import os,csv
 import time
 from selenium import webdriver
 from types import TracebackType
@@ -6,13 +6,16 @@ import bookings.constants as const
 from bookings.booking_filtration import BookingFlitration
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from prettytable import PrettyTable
 
 class Booking(webdriver.Chrome):
     def __init__(self,driver_path=r"E:/Projects/Web Scraping/",teardown=False):
         self.driver_path=driver_path
         self.teardown=teardown
         os.environ['PATH']+=self.driver_path
-        super(Booking,self).__init__()
+        options=webdriver.ChromeOptions()# Class for dev tools options
+        options.add_experimental_option('excludeSwitches',['enable-logging'])# removing warnings
+        super(Booking,self).__init__(options=options)
         self.implicitly_wait(10) #Max timeout
         self.maximize_window()
     
@@ -72,3 +75,32 @@ class Booking(webdriver.Chrome):
         filtration=BookingFlitration(driver=self)
         filtration.start_ratings(4,5)
         filtration.sort_price_lowest_first()
+    
+    def report_results(self):
+        self.implicitly_wait(5)
+        table = PrettyTable(field_names=["Hotel Name", "Hotel Price", "Hotel Score"])
+        results_container=self.find_element(By.CSS_SELECTOR,'div[data-results-container="1"]')
+        properties=results_container.find_elements(By.CSS_SELECTOR,'div[data-testid="property-card"]')
+        results = []
+        for property in properties:
+            try:
+                title = property.find_element(By.CSS_SELECTOR, 'div[data-testid="title"]')
+                hotel_name = title.get_attribute('innerHTML').strip()
+                cost = property.find_element(By.CSS_SELECTOR, 'span[data-testid="price-and-discounted-price"]')
+                price = cost.get_attribute('innerHTML').strip()
+                eles=property.find_elements(By.CLASS_NAME,'ac4a7896c7')
+                for e in eles:
+                    temp=(str(e.get_attribute('innerHTML'))).strip()
+                    if 'Scored' in temp:
+                        score=temp[7:]
+                        table.add_row([hotel_name,"₹"+price[7:],score])
+                        results.append([hotel_name, price[7:], score])
+                        break
+            except:
+                pass
+        print(table)
+        with open("data.csv",mode='w',newline='') as file:
+            writer=csv.writer(file)
+            writer.writerow(["Hotel Name", "Hotel Price", "Hotel Score"])
+            writer.writerows(results)
+        print("Data written")

@@ -18,14 +18,15 @@ class BookingFlitration():
                 for element in start_child_ele:
                     if(str(element.get_attribute('innerHTML'))).strip()==(f"{stars} stars"):
                         element.click()
+                        self.driver.implicitly_wait(5)
+                        time.sleep(2)
             else:
                 print("Check Stars Rating Error!")
     
     def sort_price_lowest_first(self):
+        self.driver.implicitly_wait(10)
         sort_selector_ele=self.driver.find_element(By.CSS_SELECTOR,'button[data-testid="sorters-dropdown-trigger"]')
         sort_selector_ele.click()
-        self.driver.implicitly_wait(5)
-        # aria-label="Price (lowest first)"
+        self.driver.implicitly_wait(3)
         lowest_price_first_button=self.driver.find_element(By.CSS_SELECTOR,'button[aria-label="Price (lowest first)"]')
         lowest_price_first_button.click()
-        time.sleep(25)
