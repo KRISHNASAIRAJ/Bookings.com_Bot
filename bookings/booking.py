@@ -24,6 +24,7 @@ class Booking(webdriver.Chrome):
     def land_first_page(self):
         self.get(const.BASE_URL)
         self.implicitly_wait(10)
+        time.sleep(3)
         
     def currency_selector(self):
         currency_element=self.find_element(By.CSS_SELECTOR,'button[aria-label="Prices in Indian Rupee"]')
@@ -69,5 +70,5 @@ class Booking(webdriver.Chrome):
     
     def apply_filtration(self):
         filtration=BookingFlitration(driver=self)
-        filtration.start_ratings(4)
-        time.sleep()
+        filtration.start_ratings(4,5)
+        filtration.sort_price_lowest_first()
